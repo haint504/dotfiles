@@ -1,0 +1,81 @@
+ctrl - c [
+  "kitty" ~
+  *: skhd -k "cmd - c"
+]
+
+ctrl - x [
+  "kitty" ~
+  *: skhd -k "cmd - x"
+]
+
+ctrl - v [
+  "kitty" ~
+  *: skhd -k "cmd - v"
+]
+
+ctrl - s [
+  "kitty" ~
+  *: skhd -k "cmd - s"
+]
+
+ctrl - t [
+  "kitty" ~
+  *: skhd -k "cmd - t"
+]
+
+ctrl - o [
+  "kitty" ~
+  *: skhd -k "cmd - o"
+]
+
+ctrl - z [
+  "kitty" ~
+  *: skhd -k "cmd - z"
+]
+
+ctrl - f [
+  "kitty" ~
+  *: skhd -k "cmd - f"
+]
+
+ctrl - a [
+  "kitty" ~
+  *: skhd -k "cmd - a"
+]
+
+ctrl - n [
+  "kitty" ~
+  *: skhd -k "cmd - n"
+]
+
+ctrl - b [
+  "kitty" ~
+  *: skhd -k "cmd - b"
+]
+
+ctrl - i [
+  "kitty" ~
+  *: skhd -k "cmd - i"
+]
+
+ctrl - u [
+  "kitty" ~
+  *: skhd -k "cmd - u"
+]
+home : skhd -k "cmd - left"
+end : skhd -k "cmd - right"
+lctrl - left : skhd -k "alt - left"
+lctrl - left : skhd -k "alt - right"
+hyper - t : kitty --single-instance -d
+
+# balance size of windows
+#shift + alt - 0 : yabai -m space --balance
+
+# make floating window fill screen
+ctrl + shift - return : yabai -m window --grid 1:1:0:0:1:1
+ctrl + shift - left : yabai -m window --grid 1:2:0:0:1:1
+ctrl + shift - right : yabai -m window --grid 1:2:1:0:1:1
+
+.blacklist [
+    "kitty"
+]
