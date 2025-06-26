@@ -1,0 +1,58 @@
+[[keyboard.bindings]]
+key = "C"
+mods = "Control"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V" 
+mods = "Control"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control"
+chars = "\u0003"
+mode = "~Vi"
+
+[cursor]
+style = { shape = "Beam", blinking = "On" }
+
+[window]
+padding.x = 0
+padding.y = 0
+
+[colors.primary]
+background = "#000000"
+foreground = "#FFFFFF"
+
+# Normal colors (ANSI 0-7)
+[colors.normal]
+black   = "#000000"    # ANSI 0
+red     = "#ff0000"    # ANSI 1
+green   = "#00ff00"    # ANSI 2
+yellow  = "#ffff00"    # ANSI 3
+blue    = "#0000ff"    # ANSI 4
+magenta = "#ff00ff"    # ANSI 5
+cyan    = "#00ffff"    # ANSI 6
+white   = "#ffffff"    # ANSI 7
+
+# Bright colors (ANSI 8-15)
+[colors.bright]
+black   = "#808080"    # ANSI 8
+red     = "#ff8080"    # ANSI 9
+green   = "#80ff80"    # ANSI 10
+yellow  = "#ffff80"    # ANSI 11
+blue    = "#8080ff"    # ANSI 12
+magenta = "#ff80ff"    # ANSI 13
+cyan    = "#80ffff"    # ANSI 14
+white   = "#ffffff"    # ANSI 15
+
+[font]
+normal = { family = "Hack", style = "Regular" }  # or your font
+size = 13
+builtin_box_drawing = true
+
+[shell]
+program = "zellij"
+
+
