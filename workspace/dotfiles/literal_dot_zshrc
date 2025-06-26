@@ -185,18 +185,12 @@ fi
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
 zinit wait lucid for \
     atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
     blockf \
         zsh-users/zsh-completions \
     atload"!_zsh_autosuggest_start" \
         zsh-users/zsh-autosuggestions
-
-#olets/zsh-abbr \
-
 
 zinit wait lucid for \
     Aloxaf/fzf-tab \
@@ -209,6 +203,9 @@ zinit wait lucid for \
     atpull'%atclone' pick"clrs.zsh" nocompile'!' \
     atload'zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"' \
         trapd00r/LS_COLORS
+
+zinit wait lucid for \
+    zdharma-continuum/fast-syntax-highlighting
 
 if command -v mise &> /dev/null; then
     eval "$(mise activate zsh)"
@@ -226,18 +223,17 @@ if command -v atuin &> /dev/null; then
     eval "$(atuin init zsh)"
 fi
 
-if [ -z "$SSH_AUTH_SOCK" ]; then
-    eval "$(ssh-agent -s)" > /dev/null 2>&1
-fi
 
-zinit wait lucid for \
-    zdharma-continuum/fast-syntax-highlighting
+# Completion configuration
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' squeeze-slashes true
 
-# # Completion configuration
+# fzf-tab configuration (official recommendations)
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
 # set descriptions format to enable group support
-# NOTE: don't use escape sequences (like '%F{red}%d%f') here, fzf-tab will ignore them
+# NOTE: don't use escape sequences here, fzf-tab will ignore them
 zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -248,36 +244,24 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 # preview directory's content with eza when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# preview for zoxide commands
+zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:zi:*' fzf-preview 'eza -1 --color=always $realpath'
+# preview for mise
+zstyle ':fzf-tab:complete:mise:*' fzf-preview 'mise list $word 2>/dev/null || echo "Available versions for $word"'
+# preview for atuin
+zstyle ':fzf-tab:complete:atuin:*' fzf-preview 'atuin stats 2>/dev/null || echo "Atuin history statistics"'
 # custom fzf flags
 # NOTE: fzf-tab does not follow FZF_DEFAULT_OPTS by default
-zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept
-# To make fzf-tab follow FZF_DEFAULT_OPTS.
-# NOTE: This may lead to unexpected behavior since some flags break this plugin. See Aloxaf/fzf-tab#455.
+zstyle ':fzf-tab:*' fzf-flags --bind=tab:accept
+# To make fzf-tab follow FZF_DEFAULT_OPTS
+# NOTE: This may lead to unexpected behavior since some flags break this plugin
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 # switch group using `<` and `>`
 zstyle ':fzf-tab:*' switch-group '<' '>'
 
-
-# # Completion caching
-# zstyle ':completion:*' use-cache on
-# zstyle ':completion:*' cache-path ~/.zsh/cache
-# # preview directory's content with eza when completing cd
-# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-# # preview for zoxide commands
-# zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza -1 --color=always $realpath'
-# zstyle ':fzf-tab:complete:zi:*' fzf-preview 'eza -1 --color=always $realpath'
-# # preview for mise
-# zstyle ':fzf-tab:complete:mise:*' fzf-preview 'mise list $word 2>/dev/null || echo "Available versions for $word"'
-# # preview for atuin
-# zstyle ':fzf-tab:complete:atuin:*' fzf-preview 'atuin stats 2>/dev/null || echo "Atuin history statistics"'
-# # custom fzf flags
-# # NOTE: fzf-tab does not follow FZF_DEFAULT_OPTS by default
-# zstyle ':fzf-tab:*' fzf-flags --bind=tab:accept
-# # To make fzf-tab follow FZF_DEFAULT_OPTS
-# # NOTE: This may lead to unexpected behavior since some flags break this plugin
-# zstyle ':fzf-tab:*' use-fzf-default-opts yes
-# # switch group using `<` and `>`
-# zstyle ':fzf-tab:*' switch-group '<' '>'
+# autoload -Uz _zinit
+# (( ${+_comps} )) && _comps[zinit]=_zinit
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
@@ -292,14 +276,16 @@ ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(expand-or-complete-prefix)
 # Suggestion colors (subtle like Fish)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 
-# # FZF default options
-# export FZF_DEFAULT_OPTS="
-#   --height 40%
-#   --layout=reverse
-#   --border
-#   --preview-window=right:50%
-#   --bind='ctrl-/:toggle-preview'
-# "
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+# FZF default options
+export FZF_DEFAULT_OPTS="
+  --height 40%
+  --layout=reverse
+  --border
+  --preview-window=right:50%
+  --bind='ctrl-/:toggle-preview'
+"
 
 # Use fd or find for FZF if available
 if command -v fd &> /dev/null; then
@@ -310,13 +296,13 @@ elif command -v rg &> /dev/null; then
 fi
 
 # Zoxide configuration (smart cd with fzf integration)
-# export _ZO_FZF_OPTS="
-#   --height 40%
-#   --layout=reverse
-#   --border
-#   --preview 'eza -1 --color=always {2..} 2>/dev/null || ls --color=always {2..}'
-#   --preview-window=right:30%
-# "
+export _ZO_FZF_OPTS="
+  --height 40%
+  --layout=reverse
+  --border
+  --preview 'eza -1 --color=always {2..} 2>/dev/null || ls --color=always {2..}'
+  --preview-window=right:30%
+"
 
 # =============================================================================
 # Shell Options
