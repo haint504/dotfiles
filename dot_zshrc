@@ -195,7 +195,6 @@ zinit wait lucid for \
 zinit wait lucid for \
     Aloxaf/fzf-tab \
     akash329d/zsh-alias-finder \
-    olets/zsh-abbr \
     hlissner/zsh-autopair
 
 
