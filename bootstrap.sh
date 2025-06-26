@@ -38,5 +38,25 @@ fi
 
 echo "Using repository: $repo"
 
-# Use chezmoi's built-in git support instead of manual download
-"$chezmoi" init --apply "https://github.com/$repo.git"
+# Initialize chezmoi with the repo
+"$chezmoi" init "https://github.com/$repo.git"
+
+# Apply dotfiles
+echo "Applying dotfiles..."
+"$chezmoi" apply
+
+# Explicitly run dev tools installer if it exists
+dev_tools_script="$HOME/.local/share/chezmoi/install-dev-tools.sh"
+if [ -f "$dev_tools_script" ]; then
+    echo "Running development tools installer..."
+    if [ -x "$dev_tools_script" ]; then
+        "$dev_tools_script"
+    else
+        sh "$dev_tools_script"
+    fi
+
+    # Also trigger chezmoi's run_once mechanism
+    "$chezmoi" apply
+else
+    echo "No dev tools installer found at $dev_tools_script"
+fi
