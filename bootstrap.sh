@@ -36,15 +36,7 @@ else
   repo="haint504/dotfiles"
 fi
 
-# Download repo to temp directory
-temp_dir=$(mktemp -d)
-cd "$temp_dir"
+echo "Using repository: $repo"
 
-if [ "$(command -v curl)" ]; then
-  curl -fsSL "https://github.com/$repo/archive/main.tar.gz" | tar -xz --strip-components=1
-elif [ "$(command -v wget)" ]; then
-  wget -qO- "https://github.com/$repo/archive/main.tar.gz" | tar -xz --strip-components=1
-fi
-
-# exec: replace current process with chezmoi init
-exec "$chezmoi" init --apply "--source=$temp_dir"
+# Use chezmoi's built-in git support instead of manual download
+"$chezmoi" init --apply "https://github.com/$repo.git"
