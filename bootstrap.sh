@@ -39,7 +39,18 @@ fi
 echo "Using repository: $repo"
 
 # Initialize chezmoi with the repo
-"$chezmoi" init "https://github.com/$repo.git"
+if [ "$USE_SSH" = "true" ]; then
+    "$chezmoi" init "git@github.com:$repo.git"
+else
+    "$chezmoi" init "https://github.com/$repo.git"
+    # Switch to SSH after cloning
+    chezmoi_dir="$HOME/.local/share/chezmoi"
+    if [ -d "$chezmoi_dir/.git" ]; then
+        cd "$chezmoi_dir"
+        git remote set-url origin "git@github.com:$repo.git"
+        cd - >/dev/null
+    fi
+fi
 
 # Apply dotfiles
 echo "Applying dotfiles..."
