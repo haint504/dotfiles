@@ -395,3 +395,8 @@ alias gs='git status'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+
+
+if [[ ":$PATH:" != *":$HOME/.atuin/bin:"* ]]; then
+    echo 'export PATH="$HOME/.atuin/bin:$PATH"' >> ~/.zshrc 2>/dev/null || true
+fi
