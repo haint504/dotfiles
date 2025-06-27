@@ -279,7 +279,7 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 # # switch group using `<` and `>`
 # zstyle ':fzf-tab:*' switch-group '<' '>'
 
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_STRATEGY=(history)
 
 # Faster autosuggestions (async)
 ZSH_AUTOSUGGEST_USE_ASYNC=true
@@ -397,6 +397,4 @@ alias cp='cp -i'
 alias mv='mv -i'
 
 
-if [[ ":$PATH:" != *":$HOME/.atuin/bin:"* ]]; then
-    echo 'export PATH="$HOME/.atuin/bin:$PATH"' >> ~/.zshrc 2>/dev/null || true
-fi
+export PATH="$HOME/.atuin/bin:$PATH"
