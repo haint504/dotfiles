@@ -201,7 +201,8 @@ zinit wait lucid for \
 zinit wait lucid for \
     Aloxaf/fzf-tab \
     akash329d/zsh-alias-finder \
-    hlissner/zsh-autopair
+    hlissner/zsh-autopair \
+    sdiebolt/zsh-ssh-agent 
 
 
 zinit wait lucid for \
@@ -227,10 +228,6 @@ fi
 
 if command -v atuin &> /dev/null; then
     eval "$(atuin init zsh)"
-fi
-
-if [ -z "$SSH_AUTH_SOCK" ]; then
-    eval "$(ssh-agent -s)" > /dev/null 2>&1
 fi
 
 # # Completion configuration
