@@ -363,6 +363,12 @@ else
     alias ll='ls -l --color=auto --group-directories-first'
 fi
 
+if command -v zoxide &> /dev/null; then
+    alias j='z'
+fi
+
+
+
 # Enhanced grep with ripgrep
 if command -v rg &> /dev/null; then
     alias grep='rg'
